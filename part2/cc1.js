@@ -7,14 +7,14 @@ function checkWinner(avgDolphins,avgKoalas){
 
     if(avgDolphins >= avgKoalas*2){
 
-        return `Dolphins Win (${avgDolphins} vs. ${avgKoalas})`;
+        return `Dolphins Win 🏆 (${avgDolphins} vs. ${avgKoalas})`;
 
     }else if(avgKoalas >= avgDolphins*2){
         
-        return `Koalas Win (${avgKoalas} vs. ${avgDolphins})`;
+        return `Koalas Win 🏆 (${avgKoalas} vs. ${avgDolphins})`;
 
     }else{
-        return 'Nobody Wins!';
+        return 'Nobody Wins! ☹';
     }
 }
 
