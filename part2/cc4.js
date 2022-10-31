@@ -16,3 +16,13 @@ for (let i = 0; i < bills.length; i++) {
    Total 💰: ${totals[i]}
    `);
 }
+
+let sum = 0;
+
+function calcAvg(arr){
+  for(let i = 0; i < arr.length; i++){
+    sum+= arr[i];
+  }
+  return `Average of all bills 💲: ${sum/arr.length}`
+}
+console.log(calcAvg(bills))
