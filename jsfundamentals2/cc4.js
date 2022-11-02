@@ -10,7 +10,7 @@ const calcTip = (bill) => {
 for (let i = 0; i < bills.length; i++) {
   const tip = calcTip(bills[i]);
   tips.push(tip);
-  totals.push(tip+ bills[i]);
+  totals.push(tip + bills[i]);
 }
 console.log(`
 Bills 💵: ${bills}
@@ -18,13 +18,12 @@ Tips 💸: ${tips}
 Totals 💰: ${totals}
 `);
 
-
-function calcAvg(arr){
+function calcAvg(arr) {
   let sum = 0;
 
-  for(let i = 0; i < arr.length; i++){
-    sum+= arr[i];
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
   }
-  return `Average of all totals 💲: ${sum/arr.length}`
+  return `Average of all totals 💲: ${sum / arr.length}`;
 }
-console.log(calcAvg(totals))
+console.log(calcAvg(totals));
