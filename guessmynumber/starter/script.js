@@ -5,22 +5,15 @@ let secretNum = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
 let highscore = 0;
 
-//We create arrow functions for each field we setting values and updating values.
+//We create arrow functions for updating values and texts
 //This purpose is prevent messy looking code in event handler function
-const msgBox = (value) => {
-  return (document.querySelector(".message").textContent = value);
-};
-const scoreBox = (value) => {
-  return (document.querySelector(".score").textContent = value);
-};
-const numberBox = (value) => {
-  return (document.querySelector(".number").textContent = value);
+
+//This function is updating and displaying textContents of any given class
+const display = (field, value) => {
+  return (document.querySelector(field).textContent = value);
 };
 const bodyStyle = (value) => {
   return (document.querySelector("body").style.backgroundColor = value);
-};
-const highscoreBox = (value) => {
-  return (document.querySelector(".highscore").textContent = value);
 };
 
 ////////////////////////////////////////////////////////////////
@@ -33,44 +26,38 @@ document.querySelector(".check").addEventListener("click", () => {
 
   //When you win
   if (guess === secretNum && score > 1) {
-    msgBox("🥳 Winner Winner 🍗Chicken Dinner!");
+    display(".message", "🥳 Winner Winner 🍗Chicken Dinner!");
     bodyStyle("#60b347");
-    numberBox(guess);
+    display(".number", guess);
     //High score
     if (score > highscore) {
       highscore = score;
-      highscoreBox(score);
+      display(".highscore", score);
     }
   }
   //When you not put a number
   else if (!guess) {
-    msgBox("❌Type a valid number!");
+    display(".message", "❌Type a valid number!");
   }
   //When your guess near to secret number(default: can be +1 or -1)
   else if (
     (guess + 1 === secretNum && score > 1) ||
     (guess - 1 === secretNum && score > 1)
   ) {
-    msgBox("🙈 Near");
+    display(".message", "🙈 Near");
     score--;
-    scoreBox(score);
+    display(".score", score);
   }
-  //When your guess way bigger than secret number
-  else if (guess > secretNum && score > 1) {
-    msgBox("📈 Too high");
+  //When your guess way bigger and smaller than secret number
+  else if (guess !== secretNum && score > 1) {
+    display(".message", guess > secretNum ? "📈 Too high" : "📉 Too low");
     score--;
-    scoreBox(score);
-  }
-  //When your guess way smaller than secret number
-  else if (guess < secretNum && score > 1) {
-    msgBox("📉 Too low");
-    score--;
-    scoreBox(score);
+    display(".score", score);
   }
   //When score is 0 and you lose
   else {
-    msgBox("💢 You lose!");
-    scoreBox(0);
+    display(".message", "💢 You lose!");
+    display(".score", 0);
   }
 });
 
@@ -81,8 +68,8 @@ document.querySelector(".again").addEventListener("click", () => {
   secretNum = Math.trunc(Math.random() * 20) + 1;
   score = 20;
 
-  msgBox("Start guessing...");
-  scoreBox("20");
-  numberBox("?");
+  display(".message", "Start guessing...");
+  display(".score", score);
+  display(".number", "?");
   bodyStyle("#222");
 });
