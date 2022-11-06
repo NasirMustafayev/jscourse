@@ -25,3 +25,12 @@ for (let i = 0; i < modalBtns.length; i++) {
 closeBtn.addEventListener("click", closeModal);
 //When you click in outside(overlay) of modal
 overlay.addEventListener("click", closeModal);
+
+//Escape Key implementation
+document.addEventListener("keydown", (event) => {
+  //Close modal if i hit Esc(or any key) and if modal window not hidden
+  if (event.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+    console.log("Clicked");
+  }
+});
