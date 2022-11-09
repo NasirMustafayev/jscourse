@@ -21,10 +21,28 @@ const btnRoll = document.querySelector(".btn--roll");
 const btnHold = document.querySelector(".btn--hold");
 
 //Initial values
-let scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let stillplaying = true;
+let scores, currentScore, activePlayer, stillplaying;
+
+//This function for reseting game and setting values to initial
+const init = () => {
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  stillplaying = true;
+  player0.classList.remove("player--winner");
+  player1.classList.remove("player--winner");
+
+  player0.classList.add("player--active");
+  player1.classList.remove("player--active");
+
+  score0.textContent = currentScore;
+  score1.textContent = currentScore;
+
+  current0.textContent = currentScore;
+  current1.textContent = currentScore;
+};
+//Should be call
+init();
 
 //Function for switching player. We use this fucntion for switching players after dice is 1 and holding
 const changePlayer = () => {
@@ -82,20 +100,4 @@ btnHold.addEventListener("click", () => {
 });
 
 //New game
-btnNew.addEventListener("click", () => {
-  scores = [0, 0];
-  currentScore = 0;
-  activePlayer = 0;
-  stillplaying = true;
-  player0.classList.remove("player--winner");
-  player1.classList.remove("player--winner");
-
-  player0.classList.add("player--active");
-  player1.classList.remove("player--active");
-
-  score0.textContent = currentScore;
-  score1.textContent = currentScore;
-
-  current0.textContent = currentScore;
-  current1.textContent = currentScore;
-});
+btnNew.addEventListener("click", init);
