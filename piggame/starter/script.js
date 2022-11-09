@@ -21,30 +21,23 @@ const btnRoll = document.querySelector(".btn--roll");
 const btnHold = document.querySelector(".btn--hold");
 
 let currentScore = 0;
+let activePlayer = 0;
 
 btnRoll.addEventListener("click", () => {
   const dice = Math.trunc(Math.random() * 6) + 1;
   diceElement.classList.remove("hidden");
   diceElement.src = `dice-${dice}.png`;
   if (dice !== 1) {
-    if (player0.classList.contains("player--active")) {
-      currentScore += dice;
-      current0.textContent = currentScore;
-    } else {
-      currentScore += dice;
-      current1.textContent = currentScore;
-    }
+    currentScore += dice;
+    document.getElementById(`current--${activePlayer}`).textContent =
+      currentScore;
   } else {
-    if (player0.classList.contains("player--active")) {
-      currentScore = 0;
-      current0.textContent = currentScore;
-      player0.classList.remove("player--active");
-      player1.classList.add("player--active");
-    } else {
-      currentScore = 0;
-      current1.textContent = currentScore;
-      player1.classList.remove("player--active");
-      player0.classList.add("player--active");
-    }
+    currentScore = 0;
+    document.getElementById(`current--${activePlayer}`).textContent =
+      currentScore;
+    activePlayer = activePlayer === 0 ? 1 : 0;
+    //Toggle -> If class have player--active class remove it if haven't add it
+    player0.classList.toggle("player--active");
+    player1.classList.toggle("player--active");
   }
 });
