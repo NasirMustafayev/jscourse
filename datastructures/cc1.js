@@ -49,4 +49,14 @@ const players1Final = [...players1, "Thiago", "Coutinho", "Perisic"];
 
 const { team1, x: draw, team2 } = game.odds;
 
-function printGoals(...params) {}
+function printGoals(...params) {
+  let goals = 0;
+  for (let i = 0; i < params.length; i++) {
+    goals++;
+    console.log(params[i]);
+  }
+  console.log(`Total goals: ${goals}`);
+}
+printGoals(...game.scored);
+
+console.log(team1 > team2 && team2);
