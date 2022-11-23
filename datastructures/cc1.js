@@ -39,24 +39,32 @@ const game = {
   },
 };
 
+//Destrcturing array of players for divide team's palyers
 const [players1, players2] = game.players;
 
+//Goalkepper(gk) is first palyer in the array and other's is fieldPlayers
 const [gk, ...fieldPlayers] = players1;
 
+//Merging all player in one array one by one(not an array style but solid)
 const allPlayers = [...players1, ...players2];
 
+//Adding subsitute players to exist team1's players array
 const players1Final = [...players1, "Thiago", "Coutinho", "Perisic"];
 
+//Destructruing game.odds object and giving x property to draw variable name
 const { team1, x: draw, team2 } = game.odds;
 
-function printGoals(...params) {
-  let goals = 0;
-  for (let i = 0; i < params.length; i++) {
-    goals++;
-    console.log(params[i]);
+//Logging goals and player names
+function printGoals(...players) {
+  for (let i = 0; i < players.length; i++) {
+    console.log(players[i]);
   }
-  console.log(`Total goals: ${goals}`);
+  console.log(`Total goals: ${players.length}`);
 }
 printGoals(...game.scored);
 
-console.log(team1 > team2 && team2);
+//Writing Who likely to win based on which team has low Odds number
+console.log(
+  (team1 < team2 && `${game.team1} likely to Wins! Odds: ${team1}`) ||
+    `${game.team2} likely to Wins! Odds: ${team2}`
+);
