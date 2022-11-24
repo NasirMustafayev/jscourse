@@ -39,6 +39,24 @@ const game = {
   },
 };
 
-for (const [goalNum, scorer] of game.scored.entries()) {
-  console.log(`Goal ${goalNum + 1}: ${scorer}`);
+for (const [i, scorer] of game.scored.entries()) {
+  console.log(`Goal ${i + 1}: ${scorer}`);
 }
+
+const odds = Object.values(game.odds);
+let avgOdd = 0;
+
+for (const [property, odd] of Object.entries(game.odds)) {
+  avgOdd += odd;
+  const oddName = game[property] || "draw";
+  console.log(`Odd of victory ${oddName}: ${odd}`);
+}
+
+avgOdd /= odds.length;
+console.log(`Average Odd is: ${avgOdd.toFixed(1)}`);
+
+const scorers = {};
+for (const scorer of game.scored) {
+  scorers[scorer] ? scorers[scorer]++ : (scorers[scorer] = 1);
+}
+console.log(scorers);
