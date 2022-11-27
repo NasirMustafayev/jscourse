@@ -31,7 +31,9 @@ console.log(
 //Using .entries for getting key and value same time with descruction
 for (const [min, event] of gameEvents.entries()) {
   //Displaying if event happend in First or Second half of game
-  console.log(
-    `${min < 45 ? "[FIRST HALF]" : "[SECOND HALF]"} ${min}: ${event}`
-  );
+  console.table({
+    half: `${min < 45 ? "[FIRST HALF]" : "[SECOND HALF]"}`,
+    min: min,
+    event: event,
+  });
 }
