@@ -29,3 +29,20 @@ const highOrder = function (str, func) {
 };
 
 console.log(highOrder("The End of World", oneWordLower));
+
+//Functions returning functions
+
+//With normal function
+const funcs = function (argmain) {
+  return function (arginside) {
+    console.log(`${argmain} and ${arginside}`);
+  };
+};
+
+funcs("First Arg Value")("Second Arg Value");
+
+//With Arrow function
+const funcsArr = (argmain1) => (arginside1) =>
+  console.log(`${argmain1} and ${arginside1}`);
+
+funcsArr("Maka")("Kaku");
