@@ -46,3 +46,27 @@ const funcsArr = (argmain1) => (arginside1) =>
   console.log(`${argmain1} and ${arginside1}`);
 
 funcsArr("Maka")("Kaku");
+
+// The Call and Apply methods
+
+const book = function (flightNum, name) {
+  console.log(
+    `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+  );
+  this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+};
+
+const lufthansa = {
+  airline: "Lufthansa",
+  iataCode: "LH",
+  bookings: [],
+};
+
+const eurowings = {
+  airline: "Eurowings",
+  iataCode: "EW",
+  bookings: [],
+};
+
+book.call(eurowings, 6931, "Gotum");
+book.call(lufthansa, 3169, "Dalim");
