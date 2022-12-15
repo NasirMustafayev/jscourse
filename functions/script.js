@@ -70,3 +70,22 @@ const eurowings = {
 
 book.call(eurowings, 6931, "Gotum");
 book.call(lufthansa, 3169, "Dalim");
+
+//The Bind method
+
+const bookEW = book.bind(eurowings),
+  bookLH = book.bind(lufthansa);
+
+bookLH(31, "Kamazullah");
+bookEW(69, "Mammazuki");
+
+eurowings.planes = 123;
+
+eurowings.buyPlane = function () {
+  this.planes++;
+  console.log(this.planes);
+};
+
+document
+  .querySelector(".buy")
+  .addEventListener("click", eurowings.buyPlane.bind(eurowings));
