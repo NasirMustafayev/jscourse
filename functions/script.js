@@ -89,3 +89,37 @@ eurowings.buyPlane = function () {
 document
   .querySelector(".buy")
   .addEventListener("click", eurowings.buyPlane.bind(eurowings));
+
+//Closures 1
+
+const outerFunction = function () {
+  let varCount = 0;
+
+  return function () {
+    varCount++;
+    console.log(`${varCount} increased weirdly`);
+  };
+};
+
+const executedFunction = outerFunction();
+
+executedFunction();
+executedFunction();
+executedFunction();
+
+console.dir(executedFunction);
+
+//Closures 2
+
+let f;
+
+const func1 = function () {
+  const a = 6;
+  f = function () {
+    console.log(a * 2);
+  };
+};
+
+func1();
+f();
+console.dir(func1);
