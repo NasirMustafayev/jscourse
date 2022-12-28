@@ -61,6 +61,9 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+//-----------------------------------------------//
+
+//Displaying movements
 const displayMovements = function (movements) {
   movements.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdrawal";
@@ -76,9 +79,57 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
+//Username generator from account objects owner names
 
-/////////////////////////////////////////////////
+const generatorUsername = function (accs) {
+  //Looping accounts array
+  accs.forEach((acc) => {
+    //Cutting and shaping username. With Map we getting first letter of every word
+    acc.username = acc.owner
+      .split(" ")
+      .map((piece) => piece[0])
+      .join("")
+      .toLowerCase();
+  });
+};
+
+//Calculating and displaying Balance
+
+const calcDisplayBalance = function (movs) {
+  const balance = movs.reduce((acc, mov) => acc + mov, 0);
+
+  labelBalance.textContent = `${balance} €`;
+};
+
+//Calculating and displaying Summary
+
+const calcDisplaySummary = function (movs) {
+  const income = movs
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  const outcome = movs
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  const interest = movs
+    .filter((mov) => mov > 0)
+    .map((mov) => (mov * 1.2) / 100)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  labelSumIn.textContent = `${income} €`;
+  labelSumOut.textContent = `${outcome} €`;
+  labelSumInterest.textContent = `${interest} €`;
+};
+
+displayMovements(account1.movements);
+generatorUsername(accounts);
+
+calcDisplayBalance(account1.movements);
+calcDisplaySummary(account1.movements);
+
+//---------------------------------------------//
+
 /////////////////////////////////////////////////
 // LECTURES
 
