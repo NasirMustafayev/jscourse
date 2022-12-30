@@ -93,40 +93,94 @@ const generatorUsername = function (accs) {
   });
 };
 
+//Updating UI based on updated values
+const updateInterface = function (account) {
+  displayMovements(account.movements);
+  calcDisplayBalance(account);
+  calcDisplaySummary(account);
+};
+
 //Calculating and displaying Balance
 
-const calcDisplayBalance = function (movs) {
-  const balance = movs.reduce((acc, mov) => acc + mov, 0);
+const calcDisplayBalance = function (account) {
+  const calcBalance = account.movements.reduce((acc, mov) => acc + mov, 0);
+  account.balance = calcBalance;
 
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${calcBalance} €`;
 };
 
 //Calculating and displaying Summary
 
-const calcDisplaySummary = function (movs) {
-  const income = movs
+const calcDisplaySummary = function (account) {
+  const income = account.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
 
-  const outcome = movs
+  const outcome = account.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
 
-  const interest = movs
+  const interest = account.movements
     .filter((mov) => mov > 0)
-    .map((mov) => (mov * 1.2) / 100)
+    .map((mov) => (mov * account.interestRate) / 100)
     .reduce((acc, mov) => acc + mov, 0);
 
   labelSumIn.textContent = `${income} €`;
   labelSumOut.textContent = `${outcome} €`;
-  labelSumInterest.textContent = `${interest} €`;
+  labelSumInterest.textContent = `${interest.toFixed(1)} €`;
 };
 
-displayMovements(account1.movements);
 generatorUsername(accounts);
 
-calcDisplayBalance(account1.movements);
-calcDisplaySummary(account1.movements);
+//Login process
+
+let loggedAccount;
+
+btnLogin.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  loggedAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  );
+  if (loggedAccount?.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `Hi ${loggedAccount.owner}`;
+
+    updateInterface(loggedAccount);
+    containerApp.style.opacity = 100;
+
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
+  } else {
+    containerApp.style.opacity = 0;
+  }
+});
+
+//Money Transfer
+
+btnTransfer.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  const receiver = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  );
+  const amount = Number(inputTransferAmount.value);
+
+  if (
+    amount &&
+    amount > 0 &&
+    receiver &&
+    loggedAccount.balance >= amount &&
+    receiver?.username !== loggedAccount.username
+  ) {
+    loggedAccount.movements.push(-amount);
+    receiver.movements.push(amount);
+
+    updateInterface(loggedAccount);
+
+    inputTransferTo.value = inputTransferAmount.value = "";
+    inputTransferAmount.blur();
+  }
+});
 
 //---------------------------------------------//
 
