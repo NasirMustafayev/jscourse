@@ -151,6 +151,7 @@ btnLogin.addEventListener("click", (event) => {
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
   } else {
+    alert("User not found!");
     containerApp.style.opacity = 0;
   }
 });
@@ -179,6 +180,49 @@ btnTransfer.addEventListener("click", (event) => {
 
     inputTransferTo.value = inputTransferAmount.value = "";
     inputTransferAmount.blur();
+  } else {
+    loggedAccount.balance <= amount ? alert("Not enought balance") : "";
+  }
+});
+
+//Request loan
+
+btnLoan.addEventListener("click", (e) => {
+  e.preventDefault();
+  const loanamount = Number(inputLoanAmount.value);
+  if (
+    inputLoanAmount.value &&
+    inputLoanAmount.value > 0 &&
+    loggedAccount.movements.some((mov) => mov >= loanamount * 0.1)
+  ) {
+    loggedAccount.movements.push(loanamount);
+    updateInterface(loggedAccount);
+
+    inputLoanAmount.value = "";
+    inputLoanAmount.blur();
+  } else {
+    alert("Something went wrong. Check if you request correct amount");
+  }
+});
+
+//Close account
+
+btnClose.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value &&
+    inputClosePin.value &&
+    inputCloseUsername.value === loggedAccount.username &&
+    loggedAccount?.pin === Number(inputClosePin.value)
+  ) {
+    const accindex = accounts.findIndex(
+      (acc) => acc.username === inputCloseUsername.value
+    );
+
+    accounts.splice(accindex, 1);
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = "Log in to get started";
   }
 });
 
