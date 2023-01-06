@@ -226,6 +226,20 @@ btnClose.addEventListener("click", (e) => {
   }
 });
 
+//Sort movements
+
+let sorted = false;
+btnSort.addEventListener("click", () => {
+  const sorting = loggedAccount.movements.slice().sort((a, b) => a - b);
+  containerMovements.innerHTML = "";
+  if (!sorted) {
+    displayMovements(sorting);
+    sorted = true;
+  } else {
+    displayMovements(loggedAccount.movements);
+    sorted = false;
+  }
+});
 //---------------------------------------------//
 
 /////////////////////////////////////////////////
