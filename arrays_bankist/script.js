@@ -66,6 +66,8 @@ const bannerEl = document.querySelector(".banner");
 
 //Displaying movements
 const displayMovements = function (movements) {
+  containerMovements.innerHTML = "";
+
   movements.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdrawal";
 
@@ -233,7 +235,6 @@ btnClose.addEventListener("click", (e) => {
 let sorted = false;
 btnSort.addEventListener("click", () => {
   const sorting = loggedAccount.movements.slice().sort((a, b) => a - b);
-  containerMovements.innerHTML = "";
   if (!sorted) {
     displayMovements(sorting);
     sorted = true;
@@ -256,3 +257,35 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+//Exceptions for words which will not be capitalize
+const exceptions = [
+  "and",
+  "a",
+  "an",
+  "but",
+  "cart",
+  "to",
+  "in",
+  "or",
+  "on",
+  "with",
+  "is",
+  "the",
+  "of",
+];
+
+function titlecase(title) {
+  const titleCase = title
+    .toLowerCase()
+    .split(" ")
+    .map((word) =>
+      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+  //In the end we need to capitalize first letter of sentence
+  //So we make sure sentence will not start with lowercase letter even it's exceptional word
+  return titleCase[0].toUpperCase() + titleCase.slice(1);
+}
+
+console.log(titlecase("the tale of a small tight pussy"));
