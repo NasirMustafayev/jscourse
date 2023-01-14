@@ -280,6 +280,7 @@ function titlecase(title) {
     .toLowerCase()
     .split(" ")
     .map((word) =>
+      //We are checking here if word in the exception array or not
       exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
     )
     .join(" ");
