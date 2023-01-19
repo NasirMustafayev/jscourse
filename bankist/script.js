@@ -90,16 +90,22 @@ const bannerEl = document.querySelector(".banner");
 //-----------------------------------------------//
 
 //Displaying movements
-const displayMovements = function (movements) {
+const displayMovements = function (movements, account) {
   containerMovements.innerHTML = "";
 
   movements.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdrawal";
 
+    const movDate = new Date(account.movementsDates[i]);
+    const day = `${movDate.getDate()}`.padStart(2, 0);
+    const month = `${movDate.getMonth() + 1}`.padStart(2, 0);
+    const year = movDate.getFullYear();
+    const displayDate = `${day}/${month}/${year}`;
+
     const html = `
     <div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-    <!--<div class="movements__date">3 days ago</div>-->
+    <div class="movements__date">${displayDate}</div>
     <div class="movements__value">${mov}</div>
     </div>`;
 
@@ -120,10 +126,11 @@ const generatorUsername = function (accs) {
       .toLowerCase();
   });
 };
+generatorUsername(accounts);
 
 //Updating UI based on updated values
 const updateInterface = function (account) {
-  displayMovements(account.movements);
+  displayMovements(account.movements, account);
   calcDisplayBalance(account);
   calcDisplaySummary(account);
 };
@@ -158,8 +165,6 @@ const calcDisplaySummary = function (account) {
   labelSumInterest.textContent = `${interest.toFixed(1)} €`;
 };
 
-generatorUsername(accounts);
-
 //Login process
 
 let loggedAccount;
@@ -173,9 +178,17 @@ btnLogin.addEventListener("click", (event) => {
   if (loggedAccount?.pin === Number(inputLoginPin.value)) {
     labelWelcome.textContent = `Hi ${loggedAccount.owner}`;
 
+    const dateNow = new Date();
+    const day = `${dateNow.getDate()}`.padStart(2, 0);
+    const month = `${dateNow.getMonth() + 1}`.padStart(2, 0);
+    const year = dateNow.getFullYear();
+    const hour = `${dateNow.getHours()}`.padStart(2, 0);
+    const minute = `${dateNow.getMinutes()}`.padStart(2, 0);
+
     updateInterface(loggedAccount);
     containerApp.style.opacity = 100;
     bannerEl.remove();
+    labelDate.textContent = `${day}/${month}/${year} ${hour}:${minute}`;
 
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
@@ -205,6 +218,9 @@ btnTransfer.addEventListener("click", (event) => {
     loggedAccount.movements.push(-amount);
     receiver.movements.push(amount);
 
+    loggedAccount.movementsDates.push(new Date().toISOString());
+    receiver.movementsDates.push(new Date().toISOString());
+
     updateInterface(loggedAccount);
 
     inputTransferTo.value = inputTransferAmount.value = "";
@@ -225,6 +241,8 @@ btnLoan.addEventListener("click", (e) => {
     loggedAccount.movements.some((mov) => mov >= loanamount * 0.1)
   ) {
     loggedAccount.movements.push(loanamount);
+    loggedAccount.movementsDates.push(new Date().toISOString());
+
     updateInterface(loggedAccount);
 
     inputLoanAmount.value = "";
@@ -261,10 +279,10 @@ let sorted = false;
 btnSort.addEventListener("click", () => {
   const sorting = loggedAccount.movements.slice().sort((a, b) => a - b);
   if (!sorted) {
-    displayMovements(sorting);
+    displayMovements(sorting, loggedAccount);
     sorted = true;
   } else {
-    displayMovements(loggedAccount.movements);
+    displayMovements(loggedAccount.movements, loggedAccount);
     sorted = false;
   }
 });
