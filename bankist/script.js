@@ -17,9 +17,9 @@ const account1 = {
     "2020-01-28T09:15:04.904Z",
     "2020-04-01T10:17:24.185Z",
     "2020-05-08T14:11:59.604Z",
-    "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2023-01-17T17:01:17.194Z",
+    "2023-01-18T23:36:17.929Z",
+    "2023-01-20T10:51:36.790Z",
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
@@ -89,6 +89,26 @@ const inputClosePin = document.querySelector(".form__input--pin");
 const bannerEl = document.querySelector(".banner");
 //-----------------------------------------------//
 
+//Calculate and display dates
+
+const calcDisplayDates = function (date, locale) {
+  //Calculate how much day passed
+  const calcDayPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const passedDays = calcDayPassed(new Date(), date);
+
+  if (passedDays === 0) {
+    return "Today";
+  } else if (passedDays === 1) {
+    return "Yesterday";
+  } else if (passedDays <= 7) {
+    return `${passedDays} days ago`;
+  }
+  //Internationalized date
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+
 //Displaying movements
 const displayMovements = function (movements, account) {
   containerMovements.innerHTML = "";
@@ -97,10 +117,7 @@ const displayMovements = function (movements, account) {
     const type = mov > 0 ? "deposit" : "withdrawal";
 
     const movDate = new Date(account.movementsDates[i]);
-    const day = `${movDate.getDate()}`.padStart(2, 0);
-    const month = `${movDate.getMonth() + 1}`.padStart(2, 0);
-    const year = movDate.getFullYear();
-    const displayDate = `${day}/${month}/${year}`;
+    const displayDate = calcDisplayDates(movDate, account.locale);
 
     const html = `
     <div class="movements__row">
@@ -178,17 +195,20 @@ btnLogin.addEventListener("click", (event) => {
   if (loggedAccount?.pin === Number(inputLoginPin.value)) {
     labelWelcome.textContent = `Hi ${loggedAccount.owner}`;
 
-    const dateNow = new Date();
-    const day = `${dateNow.getDate()}`.padStart(2, 0);
-    const month = `${dateNow.getMonth() + 1}`.padStart(2, 0);
-    const year = dateNow.getFullYear();
-    const hour = `${dateNow.getHours()}`.padStart(2, 0);
-    const minute = `${dateNow.getMinutes()}`.padStart(2, 0);
-
     updateInterface(loggedAccount);
     containerApp.style.opacity = 100;
     bannerEl.remove();
-    labelDate.textContent = `${day}/${month}/${year} ${hour}:${minute}`;
+
+    //Display Internationalized date and time in top of the page
+    const dateNow = new Date();
+    labelDate.textContent = new Intl.DateTimeFormat(loggedAccount.locale, {
+      day: "2-digit",
+      //weekday: "long",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(dateNow);
 
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
