@@ -89,6 +89,28 @@ const inputClosePin = document.querySelector(".form__input--pin");
 const bannerEl = document.querySelector(".banner");
 //-----------------------------------------------//
 
+//Updating UI based on updated values
+const updateInterface = function (account) {
+  displayMovements(account.movements, account);
+  calcDisplayBalance(account);
+  calcDisplaySummary(account);
+};
+
+//Username generator from account objects owner names
+
+const generatorUsername = function (accs) {
+  //Looping accounts array
+  accs.forEach((acc) => {
+    //Cutting and shaping username. With Map we getting first letter of every word
+    acc.username = acc.owner
+      .split(" ")
+      .map((piece) => piece[0])
+      .join("")
+      .toLowerCase();
+  });
+};
+generatorUsername(accounts);
+
 //Calculate and display dates
 
 const calcDisplayDates = function (date, locale) {
@@ -109,6 +131,41 @@ const calcDisplayDates = function (date, locale) {
   return new Intl.DateTimeFormat(locale).format(date);
 };
 
+//Formatting currencies with Internationalization API
+
+const formatCurr = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+};
+
+//Auto logout timer
+
+const starLogoutTimer = function () {
+  const counter = () => {
+    //We converting number to time format
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    //Displaying it
+    labelTimer.textContent = `${min}:${sec}`;
+
+    //If timer reach to 0 we make user log out and clear to Interval
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = "Log in to get started";
+    }
+    time--;
+  };
+
+  let time = 60;
+  counter();
+  const timer = setInterval(counter, 1000);
+  return timer;
+};
+
 //Displaying movements
 const displayMovements = function (movements, account) {
   containerMovements.innerHTML = "";
@@ -123,33 +180,15 @@ const displayMovements = function (movements, account) {
     <div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
     <div class="movements__date">${displayDate}</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${formatCurr(
+      mov,
+      account.locale,
+      account.currency
+    )}</div>
     </div>`;
 
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
-};
-
-//Username generator from account objects owner names
-
-const generatorUsername = function (accs) {
-  //Looping accounts array
-  accs.forEach((acc) => {
-    //Cutting and shaping username. With Map we getting first letter of every word
-    acc.username = acc.owner
-      .split(" ")
-      .map((piece) => piece[0])
-      .join("")
-      .toLowerCase();
-  });
-};
-generatorUsername(accounts);
-
-//Updating UI based on updated values
-const updateInterface = function (account) {
-  displayMovements(account.movements, account);
-  calcDisplayBalance(account);
-  calcDisplaySummary(account);
 };
 
 //Calculating and displaying Balance
@@ -158,7 +197,11 @@ const calcDisplayBalance = function (account) {
   const calcBalance = account.movements.reduce((acc, mov) => acc + mov, 0);
   account.balance = calcBalance;
 
-  labelBalance.textContent = `${calcBalance} €`;
+  labelBalance.textContent = `${formatCurr(
+    calcBalance,
+    account.locale,
+    account.currency
+  )}`;
 };
 
 //Calculating and displaying Summary
@@ -177,14 +220,26 @@ const calcDisplaySummary = function (account) {
     .map((mov) => (mov * account.interestRate) / 100)
     .reduce((acc, mov) => acc + mov, 0);
 
-  labelSumIn.textContent = `${income} €`;
-  labelSumOut.textContent = `${outcome} €`;
-  labelSumInterest.textContent = `${interest.toFixed(1)} €`;
+  labelSumIn.textContent = `${formatCurr(
+    income,
+    account.locale,
+    account.currency
+  )}`;
+  labelSumOut.textContent = `${formatCurr(
+    outcome,
+    account.locale,
+    account.currency
+  )}`;
+  labelSumInterest.textContent = `${formatCurr(
+    interest.toFixed(1),
+    account.locale,
+    account.currency
+  )}`;
 };
 
 //Login process
 
-let loggedAccount;
+let loggedAccount, timer;
 
 btnLogin.addEventListener("click", (event) => {
   event.preventDefault();
@@ -196,6 +251,9 @@ btnLogin.addEventListener("click", (event) => {
     labelWelcome.textContent = `Hi ${loggedAccount.owner}`;
 
     updateInterface(loggedAccount);
+    //We checking if a timer already work or not. For not bumping 2 timer is different accounts
+    timer ? clearInterval(timer) : "";
+    timer = starLogoutTimer();
     containerApp.style.opacity = 100;
     bannerEl.remove();
 
@@ -248,6 +306,11 @@ btnTransfer.addEventListener("click", (event) => {
   } else {
     loggedAccount.balance <= amount ? alert("Not enought balance") : "";
   }
+
+  //Reseting and restarting timer again in every user action.
+  //So we can control activity
+  clearInterval(timer);
+  timer = starLogoutTimer();
 });
 
 //Request loan
@@ -270,6 +333,11 @@ btnLoan.addEventListener("click", (e) => {
   } else {
     alert("Something went wrong. Check if you request correct amount");
   }
+
+  //Reseting and restarting timer again in every user action
+  //So we can control activity
+  clearInterval(timer);
+  timer = starLogoutTimer();
 });
 
 //Close account
@@ -305,4 +373,9 @@ btnSort.addEventListener("click", () => {
     displayMovements(loggedAccount.movements, loggedAccount);
     sorted = false;
   }
+
+  //Reseting and restarting timer again in every user action
+  //So we can control activity
+  clearInterval(timer);
+  timer = starLogoutTimer();
 });
