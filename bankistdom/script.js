@@ -29,22 +29,11 @@ document.addEventListener("keydown", function (e) {
     closeModal();
   }
 });
-//Elements
-const buttonLearnMore = document.querySelector(".btn--scroll-to");
-const navLinks = document.querySelectorAll(".nav__link");
 
-const section1 = document.querySelector("#section--1");
-const section2 = document.querySelector("#section--2");
-const section3 = document.querySelector("#section--3");
 //Smooth scrool
-const scrollSmooth = function (btn, target) {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    target.scrollIntoView({ behavior: "smooth" });
-  });
-};
+const buttonLearnMore = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector("#section--1");
 
-scrollSmooth(buttonLearnMore, section1);
-scrollSmooth(navLinks[0], section1);
-scrollSmooth(navLinks[1], section2);
-scrollSmooth(navLinks[2], section3);
+buttonLearnMore.addEventListener("click", () => {
+  section1.scrollIntoView({ behavior: "smooth" });
+});
