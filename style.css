@@ -1,0 +1,16 @@
+/*CSS variables*/
+
+:root {
+  --color-parent: beige;
+  --color-childparent: gray;
+  --color-child: skyblue;
+}
+#parent {
+  background: var(--color-parent);
+}
+#childparent {
+  background: var(--color-childparent);
+}
+#child {
+  background: var(--color-child);
+}
