@@ -12,7 +12,8 @@ console.log(document.body);
 const parent = document.querySelector("#parent");
 console.log(parent.querySelector("#childparent"));
 
-//Bubbling test
+//Bubbling or Propagation test
+//Propagation only happens when all parent elements have Event Listeners
 
 document.querySelector("#child").addEventListener("click", function (e) {
   this.style.backgroundColor = "rgb(197, 239, 141)";
