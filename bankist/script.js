@@ -49,6 +49,18 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  movementsDates: [
+    "2019-12-01T13:15:33.035Z",
+    "2019-12-30T09:48:16.867Z",
+    "2020-01-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-03-05T16:33:06.386Z",
+    "2020-06-10T14:43:26.374Z",
+    "2020-07-25T18:49:59.371Z",
+    "2020-09-26T12:01:20.894Z",
+  ],
+  currency: "TRY",
+  locale: "tr-TR",
 };
 
 const account4 = {
@@ -56,6 +68,15 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  movementsDates: [
+    "2021-09-01T13:15:33.035Z",
+    "2021-10-30T09:48:16.867Z",
+    "2021-12-25T06:04:23.907Z",
+    "2022-01-25T14:18:46.235Z",
+    "2022-02-05T16:33:06.386Z"
+  ],
+  currency: "RUB",
+  locale: "ru-RU",
 };
 
 const accounts = [account1, account2, account3, account4];
