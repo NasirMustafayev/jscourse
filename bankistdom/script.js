@@ -18,6 +18,11 @@ const section3 = document.querySelector("#section--3");
 const navLink = document.querySelectorAll(".nav__link");
 const navLinks = document.querySelector(".nav__links");
 
+const tabButtons = document.querySelectorAll(".operations__tab");
+const tabContainer = document.querySelector(".operations__tab-container");
+const tabContent = document.querySelectorAll(".operations__content");
+
+
 // Modal window
 
 //Registration modal
@@ -101,13 +106,28 @@ scrollSmooth(buttonLearnMore, section1);
 //We simply use Bubbling effect for this solution
 //With this we dont copy same event liseteners to all over target elements
 
-navLinks.addEventListener("click",(event)=>{
+navLinks.addEventListener("click", (event) => {
   event.preventDefault();
 
-  if(event.target.classList.contains("nav__link")){
+  if (event.target.classList.contains("nav__link")) {
     const sectionId = event.target.getAttribute("href");
     const section = document.querySelector(sectionId);
 
-    section.scrollIntoView({behavior: "smooth"});
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+})
+
+//Tab component
+
+tabContainer.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  if (event.target.classList.contains("operations__tab")) {
+    const tabId = event.target.getAttribute("data-tab");
+    const tab = document.querySelector(`.operations__content--${tabId}`);
+
+    tab.previousElementSibling.classList.remove("operations__content--active");
+
+    tab.classList.add("operations__content--active");
   }
 })
