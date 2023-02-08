@@ -104,7 +104,7 @@ scrollSmooth(buttonLearnMore, section1);
 //Solution 3 Final. With usign of Bubbling and Delegation
 
 //We simply use Bubbling effect for this solution
-//With this we dont copy same event liseteners to all over target elements
+//With that we dont need copy same event liseteners all over the target elements
 
 navLinks.addEventListener("click", (event) => {
   event.preventDefault();
@@ -120,14 +120,16 @@ navLinks.addEventListener("click", (event) => {
 //Tab component
 
 tabContainer.addEventListener("click", (event) => {
-  event.preventDefault();
+  const clickedTabButton = event.target.closest(".operations__tab");
 
-  if (event.target.classList.contains("operations__tab")) {
-    const tabId = event.target.getAttribute("data-tab");
-    const tab = document.querySelector(`.operations__content--${tabId}`);
+  if (!clickedTabButton) return;
 
-    tab.previousElementSibling.classList.remove("operations__content--active");
+  tabButtons.forEach(tabbut => tabbut.classList.remove("operations__tab--active"))
 
-    tab.classList.add("operations__content--active");
-  }
+  clickedTabButton.classList.add("operations__tab--active");
+
+  const selectedContentTab = document.querySelector(`.operations__content--${clickedTabButton.getAttribute("data-tab")}`)
+
+  tabContent.forEach(tabcon => tabcon.classList.remove("operations__content--active"))
+  selectedContentTab.classList.add("operations__content--active");
 })
