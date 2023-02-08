@@ -68,6 +68,7 @@ btnCloseCookie.addEventListener("click", () => {
 });
 
 //Smooth scrool
+
 const scrollSmooth = function (btn, target) {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -120,16 +121,25 @@ navLinks.addEventListener("click", (event) => {
 //Tab component
 
 tabContainer.addEventListener("click", (event) => {
+  //Effective method of founding closest parent
   const clickedTabButton = event.target.closest(".operations__tab");
 
+  //Guard clause. Checking if button really clicked
   if (!clickedTabButton) return;
 
+  //For attaching this button selecting style to only clicked button
+  //We first remove "active" class from all buttons
   tabButtons.forEach(tabbut => tabbut.classList.remove("operations__tab--active"))
 
+  //Then we only add this "active" class to clicked button
   clickedTabButton.classList.add("operations__tab--active");
 
-  const selectedContentTab = document.querySelector(`.operations__content--${clickedTabButton.getAttribute("data-tab")}`)
+  //Selecting Content element based on Clicked button's Data-tab attribute
+  //dataset is using for attributes start with "data" key(data-tab)
+  //Same functionality getAttributes also can be used
+  const selectedContentTab = document.querySelector(`.operations__content--${clickedTabButton.dataset.tab}`)
 
+  //Removing "active" class from all table contents
   tabContent.forEach(tabcon => tabcon.classList.remove("operations__content--active"))
   selectedContentTab.classList.add("operations__content--active");
 })
