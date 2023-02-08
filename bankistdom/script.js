@@ -15,8 +15,10 @@ const section1 = document.querySelector("#section--1");
 const section2 = document.querySelector("#section--2");
 const section3 = document.querySelector("#section--3");
 
+const nav = document.querySelector("nav");
 const navLink = document.querySelectorAll(".nav__link");
 const navLinks = document.querySelector(".nav__links");
+const logo = document.querySelector(".nav__logo");
 
 const tabButtons = document.querySelectorAll(".operations__tab");
 const tabContainer = document.querySelector(".operations__tab-container");
@@ -143,3 +145,23 @@ tabContainer.addEventListener("click", (event) => {
   tabContent.forEach(tabcon => tabcon.classList.remove("operations__content--active"))
   selectedContentTab.classList.add("operations__content--active");
 })
+
+//Nav links hover
+
+const hoverHandler = function (event, opacity) {
+  if (event.target.classList.contains("nav__link")) {
+    const siblings = event.target.closest(".nav").querySelectorAll(".nav__link");
+
+    siblings.forEach(nav => {
+      if (nav !== event.target) nav.style.opacity = opacity
+    });
+
+    logo.style.opacity = opacity;
+  }
+}
+
+//Mouse on nav links
+nav.addEventListener("mouseover", event => hoverHandler(event, 0.5));
+
+//Mouse out of nav links
+nav.addEventListener("mouseout", event => hoverHandler(event, 1));
