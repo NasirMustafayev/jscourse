@@ -52,22 +52,22 @@ document.addEventListener("keydown", function (e) {
 
 //Cookie message
 
-const cookieMessage = document.createElement("div");
-cookieMessage.classList.add("cookie-message");
-cookieMessage.innerHTML =
-  "We use cookies for better user experience <button class='btn btn--close--cookie'>Alright!</button>";
+// const cookieMessage = document.createElement("div");
+// cookieMessage.classList.add("cookie-message");
+// cookieMessage.innerHTML =
+//   "We use cookies for better user experience <button class='btn btn--close--cookie'>Alright!</button>";
 
-// header.prepend(cookieMessage);//First of parent element's inisde
-// header.append(cookieMessage);//Last of parent element's inisde
-// header.after(cookieMessage);//After the parent element
-header.before(cookieMessage); //Before the paerent element
+// // header.prepend(cookieMessage);//First of parent element's inisde
+// // header.append(cookieMessage);//Last of parent element's inisde
+// // header.after(cookieMessage);//After the parent element
+// header.before(cookieMessage); //Before the paerent element
 
-//Close cookie message
-const btnCloseCookie = document.querySelector(".btn--close--cookie");
+// //Close cookie message
+// const btnCloseCookie = document.querySelector(".btn--close--cookie");
 
-btnCloseCookie.addEventListener("click", () => {
-  cookieMessage.remove();
-});
+// btnCloseCookie.addEventListener("click", () => {
+//   cookieMessage.remove();
+// });
 
 //Smooth scrool
 
@@ -169,3 +169,8 @@ nav.addEventListener("mouseover", event => hoverHandler(event, 0.5));
 
 //Mouse out of nav links
 nav.addEventListener("mouseout", event => hoverHandler(event, 1));
+
+//Sticky navigation bar
+window.addEventListener("scroll", () => {
+  nav.classList.add("sticky");
+})
