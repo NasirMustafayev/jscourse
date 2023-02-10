@@ -24,6 +24,7 @@ const tabButtons = document.querySelectorAll(".operations__tab");
 const tabContainer = document.querySelector(".operations__tab-container");
 const tabContent = document.querySelectorAll(".operations__content");
 
+//----------------------------------------------------//
 
 // Modal window
 
@@ -50,6 +51,8 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+//----------------------------------------------------//
+
 //Cookie message
 
 // const cookieMessage = document.createElement("div");
@@ -68,6 +71,8 @@ document.addEventListener("keydown", function (e) {
 // btnCloseCookie.addEventListener("click", () => {
 //   cookieMessage.remove();
 // });
+
+//----------------------------------------------------//
 
 //Smooth scrool
 
@@ -120,6 +125,8 @@ navLinks.addEventListener("click", (event) => {
   }
 })
 
+//----------------------------------------------------//
+
 //Tab component
 
 tabContainer.addEventListener("click", (event) => {
@@ -146,7 +153,10 @@ tabContainer.addEventListener("click", (event) => {
   selectedContentTab.classList.add("operations__content--active");
 })
 
+//----------------------------------------------------//
+
 //Nav links hover
+
 //We create function for this functionality for not repeating our self
 const hoverHandler = function (event, opacity) {
   if (event.target.classList.contains("nav__link")) {
@@ -170,7 +180,19 @@ nav.addEventListener("mouseover", event => hoverHandler(event, 0.5));
 //Mouse out of nav links
 nav.addEventListener("mouseout", event => hoverHandler(event, 1));
 
+//----------------------------------------------------//
+
 //Sticky navigation bar
+//Getting coordinates of section1.
+//Because we want to navbar get sticked to screen when we want to scroll and reach here
+const initCoordinate = section1.getBoundingClientRect();
+
 window.addEventListener("scroll", () => {
-  nav.classList.add("sticky");
+  //If scrolled area's "Y" coordinate bigger or equal to "section1"'s top coordinate
+  if (window.scrollY >= initCoordinate.top)
+    //Getting sticked
+    nav.classList.add("sticky");
+  //Remove sticky navbar when we go back to top of page
+  //Basically if above condition couldn't fulfilled
+  else nav.classList.remove("sticky");
 })
