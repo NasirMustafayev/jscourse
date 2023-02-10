@@ -147,15 +147,19 @@ tabContainer.addEventListener("click", (event) => {
 })
 
 //Nav links hover
-
+//We create function for this functionality for not repeating our self
 const hoverHandler = function (event, opacity) {
   if (event.target.classList.contains("nav__link")) {
+    //Selecting sibling elements of target element. So then we can control opacity of siblings
     const siblings = event.target.closest(".nav").querySelectorAll(".nav__link");
 
+    //Looping over siblings for adding opacity value to style
     siblings.forEach(nav => {
+      //Except target element(mouseovered element) itself
       if (nav !== event.target) nav.style.opacity = opacity
     });
 
+    //Adding opacity value to logo also
     logo.style.opacity = opacity;
   }
 }
