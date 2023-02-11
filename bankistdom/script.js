@@ -185,14 +185,32 @@ nav.addEventListener("mouseout", event => hoverHandler(event, 1));
 //Sticky navigation bar
 //Getting coordinates of section1.
 //Because we want to navbar get sticked to screen when we want to scroll and reach here
-const initCoordinate = section1.getBoundingClientRect();
+// const initCoordinate = section1.getBoundingClientRect();
 
-window.addEventListener("scroll", () => {
-  //If scrolled area's "Y" coordinate bigger or equal to "section1"'s top coordinate
-  if (window.scrollY >= initCoordinate.top)
-    //Getting sticked
-    nav.classList.add("sticky");
-  //Remove sticky navbar when we go back to top of page
-  //Basically if above condition couldn't fulfilled
-  else nav.classList.remove("sticky");
-})
+// window.addEventListener("scroll", () => {
+//   //If scrolled area's "Y" coordinate bigger or equal to "section1"'s top coordinate
+//   if (window.scrollY >= initCoordinate.top)
+//     //Getting sticked
+//     nav.classList.add("sticky");
+//   //Remove sticky navbar when we go back to top of page
+//   //Basically if above condition couldn't fulfilled
+//   else nav.classList.remove("sticky");
+// })
+
+//Sticky navigation with IntersectionObserver
+//Most basic type
+const callback = function (entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) nav.classList.add("sticky")
+    else nav.classList.remove("sticky")
+  })
+};
+
+const options = {
+  root: null,
+  threshold: 0.1,
+  // rootMargin: "0%"
+}
+
+const observer = new IntersectionObserver(callback, options)
+observer.observe(section1)
