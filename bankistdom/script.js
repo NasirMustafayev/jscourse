@@ -199,18 +199,26 @@ nav.addEventListener("mouseout", event => hoverHandler(event, 1));
 
 //Sticky navigation with IntersectionObserver
 //Most basic type
-const callback = function (entries, observer) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) nav.classList.add("sticky")
-    else nav.classList.remove("sticky")
-  })
+//Getting dynamic size of navbar height
+const getDynamicNavbarSize = nav.getBoundingClientRect().height
+
+//Callback function of our observer
+const callback = function (entries) {
+  //If target element not intersecting much as our threshold value then stick navbar
+  if (!entries[0].isIntersecting) nav.classList.add("sticky");
+  //If it is remove sticky class
+  else nav.classList.remove("sticky");
 };
 
-const options = {
+//Creating our new observer here
+const observer = new IntersectionObserver(callback, {
+  //Defining viewpor. Its can be parent element of target or entire viewport(screen)
+  //We use "null" here for entire display
   root: null,
-  threshold: 0.1,
-  // rootMargin: "0%"
-}
+  //Threshold is basically how much percentage need to target element visible in screen for triggering callback function
+  threshold: 0,
+  rootMargin: `-${getDynamicNavbarSize}px`
+});
 
-const observer = new IntersectionObserver(callback, options)
-observer.observe(section1)
+//Observer start for "header" element
+observer.observe(header);
