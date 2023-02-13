@@ -26,7 +26,11 @@ const tabContainer = document.querySelector(".operations__tab-container");
 const tabContent = document.querySelectorAll(".operations__content");
 
 const imgsLazy = document.querySelectorAll("img[data-src]");
-const sliders = document.querySelectorAll("slide");
+
+const slides = document.querySelectorAll(".slide");
+const slider = document.querySelector(".slider");
+const sliderBtnLeft = document.querySelector(".slider__btn--left");
+const sliderBtnRight = document.querySelector(".slider__btn--right");
 //----------------------------------------------------//
 
 // Modal window
@@ -262,3 +266,30 @@ imgsLazy.forEach(imgs => {
 //----------------------------------------------------//
 
 //Slider
+
+let currentSlide = 0;
+const maxSlide = slides.length;
+
+const goToSlide = function (slide) {
+  slides.forEach((slider, index) => slider.style.transform =
+    `translateX(${100 * (index - slide)}%)`
+  )
+}
+
+goToSlide(0);
+
+const nextSlide = function () {
+  if (currentSlide === maxSlide - 1) currentSlide = 0;
+  currentSlide++;
+
+  goToSlide(currentSlide);
+}
+const previousSlide = function () {
+  if (currentSlide === 0) currentSlide = maxSlide;
+  currentSlide--;
+
+  goToSlide(currentSlide);
+}
+
+sliderBtnRight.addEventListener("click", nextSlide)
+sliderBtnLeft.addEventListener("click", previousSlide)
