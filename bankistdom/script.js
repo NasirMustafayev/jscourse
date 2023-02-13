@@ -11,6 +11,7 @@ const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 
 const buttonLearnMore = document.querySelector(".btn--scroll-to");
+const allSections = document.querySelectorAll(".section");
 const section1 = document.querySelector("#section--1");
 const section2 = document.querySelector("#section--2");
 const section3 = document.querySelector("#section--3");
@@ -24,6 +25,8 @@ const tabButtons = document.querySelectorAll(".operations__tab");
 const tabContainer = document.querySelector(".operations__tab-container");
 const tabContent = document.querySelectorAll(".operations__content");
 
+const imgsLazy = document.querySelectorAll("img[data-src]");
+const sliders = document.querySelectorAll("slide");
 //----------------------------------------------------//
 
 // Modal window
@@ -183,19 +186,6 @@ nav.addEventListener("mouseout", event => hoverHandler(event, 1));
 //----------------------------------------------------//
 
 //Sticky navigation bar
-//Getting coordinates of section1.
-//Because we want to navbar get sticked to screen when we want to scroll and reach here
-// const initCoordinate = section1.getBoundingClientRect();
-
-// window.addEventListener("scroll", () => {
-//   //If scrolled area's "Y" coordinate bigger or equal to "section1"'s top coordinate
-//   if (window.scrollY >= initCoordinate.top)
-//     //Getting sticked
-//     nav.classList.add("sticky");
-//   //Remove sticky navbar when we go back to top of page
-//   //Basically if above condition couldn't fulfilled
-//   else nav.classList.remove("sticky");
-// })
 
 //Sticky navigation with IntersectionObserver
 //Most basic type
@@ -203,7 +193,7 @@ nav.addEventListener("mouseout", event => hoverHandler(event, 1));
 const getDynamicNavbarSize = nav.getBoundingClientRect().height
 
 //Callback function of our observer
-const callback = function (entries) {
+const stickyNav = function (entries) {
   //If target element not intersecting much as our threshold value then stick navbar
   if (!entries[0].isIntersecting) nav.classList.add("sticky");
   //If it is remove sticky class
@@ -211,7 +201,7 @@ const callback = function (entries) {
 };
 
 //Creating our new observer here
-const observer = new IntersectionObserver(callback, {
+const headerObserver = new IntersectionObserver(stickyNav, {
   //Defining viewpor. Its can be parent element of target or entire viewport(screen)
   //We use "null" here for entire display
   root: null,
@@ -221,4 +211,54 @@ const observer = new IntersectionObserver(callback, {
 });
 
 //Observer start for "header" element
-observer.observe(header);
+headerObserver.observe(header);
+
+//----------------------------------------------------//
+
+//Revealing elements on scroll
+
+const revealSection = function (entries, observer) {
+
+  const [entry] = entries;
+  if (!entry.isIntersecting) return
+
+  entry.target.classList.remove("section--hidden");
+  observer.unobserve(entry.target)
+}
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.2
+});
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+})
+
+//----------------------------------------------------//
+
+//Lazy load images
+
+const lazyLoad = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.src = entry.target.dataset.src
+
+  entry.target.addEventListener("load", () => {
+    entry.target.classList.remove("lazy-img");
+  })
+  observer.unobserve(entry.target);
+}
+
+const imgOberserver = new IntersectionObserver(lazyLoad, {
+  root: null,
+  threshold: 0.4
+});
+
+imgsLazy.forEach(imgs => {
+  imgOberserver.observe(imgs);
+});
+
+//----------------------------------------------------//
+
+//Slider
