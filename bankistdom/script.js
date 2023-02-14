@@ -348,5 +348,19 @@ const sliderStart = function () {
       activeDotEffect(slide)
     }
   })
+
+  //Autoplay slider
+
+  //Default initial interval
+  let autoPlaySlider = setInterval(nextSlide, 5000);
+
+  //When mouse over slider
+  slider.addEventListener("mouseover", () => {
+    clearInterval(autoPlaySlider)
+  });
+  //When mouse out slider go back to initial value
+  slider.addEventListener("mouseout", () => {
+    autoPlaySlider = setInterval(nextSlide, 5000)
+  })
 }
 sliderStart();
