@@ -31,6 +31,7 @@ const slides = document.querySelectorAll(".slide");
 const slider = document.querySelector(".slider");
 const sliderBtnLeft = document.querySelector(".slider__btn--left");
 const sliderBtnRight = document.querySelector(".slider__btn--right");
+const dots = document.querySelector(".dots");
 //----------------------------------------------------//
 
 // Modal window
@@ -267,29 +268,85 @@ imgsLazy.forEach(imgs => {
 
 //Slider
 
-let currentSlide = 0;
-const maxSlide = slides.length;
+const sliderStart = function () {
 
-const goToSlide = function (slide) {
-  slides.forEach((slider, index) => slider.style.transform =
-    `translateX(${100 * (index - slide)}%)`
-  )
+  let currentSlide = 0;
+  const maxSlide = slides.length;
+
+  //Go to slide
+  const goToSlide = function (slide) {
+    slides.forEach((slider, index) => slider.style.transform =
+      `translateX(${100 * (index - slide)}%)`
+    )
+  }
+
+
+  //Next slide
+  const nextSlide = function () {
+    if (currentSlide === maxSlide - 1) currentSlide = 0;
+    else currentSlide++;
+
+    goToSlide(currentSlide);
+    activeDotEffect(currentSlide)
+
+  }
+
+  //Previous slide
+  const previousSlide = function () {
+    if (currentSlide === 0) currentSlide = maxSlide - 1;
+    else currentSlide--;
+
+    goToSlide(currentSlide);
+    activeDotEffect(currentSlide)
+
+  }
+
+  //Create slider dots
+  const createDots = function () {
+    slides.forEach((_, index) => {
+      dots.insertAdjacentHTML("beforeend", `<button class="dots__dot" data-slide="${index}"></button>`);
+    })
+  }
+
+  //Active dot effect
+  const activeDotEffect = function (slide) {
+    document.querySelectorAll(".dots__dot").forEach(dot => {
+      dot.classList.remove("dots__dot--active");
+
+      document.querySelector(`.dots__dot[data-slide="${slide}"]`)
+        .classList.add("dots__dot--active");
+    })
+
+  }
+
+  //Initial slider values
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activeDotEffect(0)
+  }
+
+  init();
+
+  //Event handlers
+
+  //Contol buttons handlers
+  sliderBtnRight.addEventListener("click", nextSlide)
+  sliderBtnLeft.addEventListener("click", previousSlide)
+
+  //Arrow keys control handler
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") nextSlide();
+    else if (event.key === "ArrowLeft") previousSlide();
+  })
+
+  //Slider dots handler
+  dots.addEventListener("click", (event) => {
+    if (event.target.classList.contains("dots__dot")) {
+      const { slide } = event.target.dataset;
+      goToSlide(slide);
+      activeDotEffect(slide)
+    }
+  })
 }
-
-goToSlide(0);
-
-const nextSlide = function () {
-  if (currentSlide === maxSlide - 1) currentSlide = 0;
-  currentSlide++;
-
-  goToSlide(currentSlide);
-}
-const previousSlide = function () {
-  if (currentSlide === 0) currentSlide = maxSlide;
-  currentSlide--;
-
-  goToSlide(currentSlide);
-}
-
-sliderBtnRight.addEventListener("click", nextSlide)
-sliderBtnLeft.addEventListener("click", previousSlide)
+sliderStart();
