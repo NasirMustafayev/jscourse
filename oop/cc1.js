@@ -1,12 +1,3 @@
-'use strict';
-Array.prototype.onebyone = function () {
-    return this.map(piece => piece + "Caartulla");
-}
-
-const arr = ["Watadodo", "Bruh", 69, 31, "Caaart"];
-
-console.log(arr.onebyone());
-
 function Car(model, speed) {
     this.make = model;
     this.speed = speed;

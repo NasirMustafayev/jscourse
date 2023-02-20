@@ -127,9 +127,10 @@ navLinks.addEventListener("click", (event) => {
 
   if (event.target.classList.contains("nav__link")) {
     const sectionId = event.target.getAttribute("href");
-    const section = document.querySelector(sectionId);
-
-    section.scrollIntoView({ behavior: "smooth" });
+    if (sectionId != "#") {
+      const section = document.querySelector(sectionId);
+      section.scrollIntoView({ behavior: "smooth" });
+    }
   }
 })
 
