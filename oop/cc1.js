@@ -1,5 +1,5 @@
 function Car(model, speed) {
-    this.make = model;
+    this.model = model;
     this.speed = speed;
 }
 
