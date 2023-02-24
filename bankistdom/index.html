@@ -33,8 +33,19 @@
             <a class="nav__link" href="#section--3">Testimonials</a>
           </li>
           <li class="nav__item">
-            <a class="nav__link nav__link--btn btn--show-modal" href="#"
+            <a
+              class="nav__link nav__link--btn btn--show-modal"
+              id="signup"
+              href="#"
               >Open account</a
+            >
+          </li>
+          <li class="nav__item">
+            <a
+              class="nav__link nav__link--btn btn--show-modal"
+              id="login"
+              href="#"
+              >Login</a
             >
           </li>
         </ul>
@@ -293,7 +304,9 @@
           today!
         </h3>
       </div>
-      <button class="btn btn--show-modal">Open your free account today!</button>
+      <button class="btn btn--show-modal" id="signup">
+        Open your free account today!
+      </button>
     </section>
 
     <footer class="footer">
@@ -333,7 +346,7 @@
       </p>
     </footer>
 
-    <div class="modal hidden">
+    <div class="modal hidden" id="signupmodal">
       <button class="btn--close-modal">&times;</button>
       <h2 class="modal__header">
         Open your bank account <br />
@@ -347,6 +360,20 @@
         <label>Email Address</label>
         <input type="email" />
         <button class="btn">Next step &rarr;</button>
+      </form>
+    </div>
+
+    <div class="modal hidden" id="loginmodal">
+      <button class="btn--close-modal">&times;</button>
+      <h2 class="modal__header">
+        <span class="highlight">Login</span>
+      </h2>
+      <form class="modal__form">
+        <label>Username</label>
+        <input type="text" />
+        <label>Password</label>
+        <input type="password" />
+        <button class="btn">&rarr;</button>
       </form>
     </div>
     <div class="overlay hidden"></div>

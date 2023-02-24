@@ -5,10 +5,12 @@
 //Elements
 const header = document.querySelector(".header");
 
-const modal = document.querySelector(".modal");
+const modalSignUp = document.querySelector("#signupmodal");
+const modalLogin = document.querySelector("#loginmodal");
 const overlay = document.querySelector(".overlay");
-const btnCloseModal = document.querySelector(".btn--close-modal");
-const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+const btnsCloseModal = document.querySelectorAll(".btn--close-modal");
+const btnsOpenSignUpModal = document.querySelectorAll("#signup");
+const btnOpenLoginModal = document.querySelector("#login");
 
 const buttonLearnMore = document.querySelector(".btn--scroll-to");
 const allSections = document.querySelectorAll(".section");
@@ -36,28 +38,42 @@ const dots = document.querySelector(".dots");
 
 // Modal window
 
-//Registration modal
-const openModal = function (e) {
+//Registration and Login modal
+const openSignUpModal = function (e) {
   e.preventDefault();
-  modal.classList.remove("hidden");
+  modalSignUp.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+};
+
+const openLoginModal = function (e) {
+  e.preventDefault();
+  modalLogin.classList.remove("hidden");
   overlay.classList.remove("hidden");
 };
 
 const closeModal = function () {
-  modal.classList.add("hidden");
+  modalSignUp.classList.add("hidden");
+  modalLogin.classList.add("hidden");
   overlay.classList.add("hidden");
 };
 
-btnsOpenModal.forEach((button) => button.addEventListener("click", openModal));
+btnsOpenSignUpModal.forEach((button) => button.addEventListener("click", openSignUpModal));
+btnOpenLoginModal.addEventListener("click", openLoginModal);
 
-btnCloseModal.addEventListener("click", closeModal);
+btnsCloseModal.forEach(button => button.addEventListener("click", closeModal));
 overlay.addEventListener("click", closeModal);
 
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    closeModal();
-  }
-});
+const KeydownHidden = function (modal) {
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  })
+};
+
+KeydownHidden(modalSignUp);
+KeydownHidden(modalLogin);
+
 
 //----------------------------------------------------//
 
