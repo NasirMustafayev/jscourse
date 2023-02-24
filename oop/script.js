@@ -22,25 +22,57 @@ console.log(arr.onebyone());
 // const bmw = new Car("BMW", 120);
 // const mercedes = new Car("Mercedes", 95);
 
-class CarCl {
-    constructor(model, speed) {
-        this.model = model;
-        this.speed = speed;
-    }
+// class CarCl {
+//     constructor(model, speed) {
+//         this.model = model;
+//         this.speed = speed;
+//     }
 
-    accelerate() {
-        console.log(`${this.model}>>${this.speed += 10}km/h`);
-    }
-    brake() {
-        console.log(`${this.model}<<${this.speed -= 5}km/h`);
-    }
+//     accelerate() {
+//         console.log(`${this.model}>>${this.speed += 10}km/h`);
+//     }
+//     brake() {
+//         console.log(`${this.model}<<${this.speed -= 5}km/h`);
+//     }
 
-    get speedUS() {
-        console.log(`${this.model}<<${this.speed / 1.6}mp/h`);
-    }
-    set speedUS(spd) {
-        this.speed = spd * 1.6;
-    }
+//     get speedUS() {
+//         console.log(`${this.model}<<${this.speed / 1.6}mp/h`);
+//     }
+//     set speedUS(spd) {
+//         this.speed = spd * 1.6;
+//     }
+// }
+
+// const ford = new CarCl("Ford", 120);
+
+function Car(model, speed) {
+    this.model = model;
+    this.speed = speed;
 }
 
-const ford = new CarCl("Ford", 120);
+
+Car.prototype.accelerate = function () {
+    console.log(`${this.model}>>${this.speed -= 10} km/h`);
+}
+
+Car.prototype.brake = function () {
+    console.log(`${this.model}>>${this.speed -= 10} km/h`);
+}
+
+function EV(model, speed, charge) {
+    Car.call(this, model, speed)
+    this.charge = charge
+}
+
+EV.prototype = Object.create(Car.prototype);
+
+EV.prototype.changeBattery = function (chargeto) {
+    this.charge = chargeto
+}
+
+EV.prototype.accelerate = function () {
+    console.log(`${this.model}>>${this.speed += 20}km/h|${--this.charge}%`);
+
+}
+
+const tesla = new EV("Tesla", 120, 23)
