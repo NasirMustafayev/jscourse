@@ -18,7 +18,7 @@ function EV(model, speed, charge) {
 
 EV.prototype = Object.create(Car.prototype);
 
-EV.prototype.changeBattery = function (chargeto) {
+EV.prototype.chargeBattery = function (chargeto) {
     this.charge = chargeto
 }
 
