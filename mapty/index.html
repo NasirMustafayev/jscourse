@@ -20,8 +20,9 @@
   <body>
     <div class="sidebar">
       <img src="logo.png" alt="Logo" class="logo" />
-
       <ul class="workouts">
+        <button class="btn__reset">Clear all</button>
+        <button class="btn__sort">↓Sort</button>
         <form class="form hidden">
           <div class="form__row">
             <label class="form__label">Type</label>
@@ -71,6 +72,14 @@
       </p>
     </div>
 
+    <div class="modal hidden">
+      <button class="btn--close-modal">&times;</button>
+      <h2 class="modal__header">Your all workout data will be clear</h2>
+      <button class="btn__no">Back</button>
+      <button class="btn__yes">Continue</button>
+    </div>
+
     <div id="map"></div>
+    <div class="overlay hidden"></div>
   </body>
 </html>
