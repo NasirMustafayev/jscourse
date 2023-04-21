@@ -15,7 +15,7 @@ const renderCountry = (data, neighbour = "") => {
       <p class="country__row"><span>👫</span>
       ${(data.population > 1000000) ? (+data.population / 1000000).toFixed(1) + "mln" : data.population}
       </p>
-      <p class="country__row"><span>🗣️</span>${data.languages[Object.keys(data.languages)[0]]}</p>
+      <p class="country__row"><span>🗣️</span>${Object.values(data.languages).map(lang => lang)}</p>
         <p class="country__row"><span>💰</span>${data.currencies[Object.keys(data.currencies)[0]].name}</p>
     </div >
   </article > `;
