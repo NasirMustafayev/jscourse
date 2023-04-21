@@ -5,16 +5,8 @@ const countriesContainer = document.querySelector('.countries');
 const countryInput = document.querySelector("#country");
 
 ///////////////////////////////////////
-const getCountry = function (country) {
-    const request = new XMLHttpRequest();
-    request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
-    request.send();
-
-    request.addEventListener("load", () => {
-        const [data] = JSON.parse(request.responseText);
-        console.log(data);
-
-        const html = `
+const renderCountry = (data) => {
+    const html = `
     <article class="country">
     <img class="country__img" src="${data.flags.svg}" />
     <div class="country__data">
@@ -28,14 +20,35 @@ const getCountry = function (country) {
     </div >
   </article > `;
 
-        countriesContainer.insertAdjacentHTML("beforeend", html)
-        countriesContainer.style.opacity = 1
-    });
-};
+    countriesContainer.insertAdjacentHTML("beforeend", html)
+    countriesContainer.style.opacity = 1
+}
+
+//First and Old method of getting data from Web API
+//With XML Request and Eventhandler
+
+// const getCountryData = function (country) {
+//     const request = new XMLHttpRequest();
+//     request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
+//     request.send();
+
+//     request.addEventListener("load", () => {
+//         const [data] = JSON.parse(request.responseText);
+//         renderCountry(data);
+//     });
+// };
+
+//With Fetch API and Promises
+
+const getCountryData = function (country) {
+    fetch(`https://restcountries.com/v3.1/name/${country}`)
+        .then((response) => response.json())
+        .then((data) => renderCountry(data[0]))
+}
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !countryInput.value == "") {
-        getCountry(countryInput.value)
+        getCountryData(countryInput.value)
         countryInput.value = ""
     }
 })
