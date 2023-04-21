@@ -5,9 +5,9 @@ const countriesContainer = document.querySelector('.countries');
 const countryInput = document.querySelector("#country");
 
 ///////////////////////////////////////
-const renderCountry = (data) => {
+const renderCountry = (data, neighbour = "") => {
     const html = `
-    <article class="country">
+    <article class="country ${neighbour}">
     <img class="country__img" src="${data.flags.svg}" />
     <div class="country__data">
       <h3 class="country__name">${data.name.common}</h3>
@@ -43,7 +43,18 @@ const renderCountry = (data) => {
 const getCountryData = function (country) {
     fetch(`https://restcountries.com/v3.1/name/${country}`)
         .then((response) => response.json())
-        .then((data) => renderCountry(data[0]))
+        .then((data) => {
+            renderCountry(data[0])
+            console.log(data[0]);
+
+            const neighbour = data[0].borders[0];
+
+            if (!neighbour) return
+
+            return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`)
+        })
+        .then((response) => response.json())
+        .then((data) => renderCountry(data[0], "neighbour"))
 }
 
 document.addEventListener("keydown", (e) => {
