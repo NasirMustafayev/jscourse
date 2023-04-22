@@ -7,7 +7,7 @@ const whereAmI = function (lat, lng) {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            console.log(`You are in
+            alert(`You are in
             ${data.address.city ? data.address.city : data.address.village},${data.address.country}`);
 
         })
@@ -18,5 +18,5 @@ btnWaI.addEventListener("click", () => {
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
         whereAmI(latitude, longitude);
-    });
+    }, () => { alert("Something went wrong while accessing your location informations") });
 })
