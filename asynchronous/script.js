@@ -21,7 +21,6 @@ const renderCountry = (data, neighbour = "") => {
   </article > `;
 
     countriesContainer.insertAdjacentHTML("beforeend", html)
-    countriesContainer.style.opacity = 1
 }
 
 //First and Old method of getting data from Web API
@@ -39,23 +38,34 @@ const renderCountry = (data, neighbour = "") => {
 // };
 
 //With Fetch API and Promises
-
 const getCountryData = function (country) {
     fetch(`https://restcountries.com/v3.1/name/${country}`)
-        .then((response) => response.json())
+        .then((response) => {
+
+            if (!response.ok)
+                throw new Error("Country doesn't exist!")
+
+            return response.json()
+        })
         .then((data) => {
             renderCountry(data[0])
             console.log(data[0]);
 
             const neighbours = data[0].borders;
 
-            if (!neighbours) return
+            if (!neighbours) throw new Error(`${data[0].name.common} doesn't have a neighbor`)
 
             const result = neighbours.map(neighbour =>
                 fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`)
                     .then((response) => response.json())
                     .then((data) => renderCountry(data[0], "neighbour")))
             return result
+        })
+        .catch(err => alert(`
+        Attention\n
+        ${err.message}`))
+        .finally(() => {
+            countriesContainer.style.opacity = 1
         })
 
 }
