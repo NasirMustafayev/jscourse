@@ -1,6 +1,6 @@
 'use strict';
 
-const btn = document.querySelector('.btn-country');
+const btnWaI = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 const countryInput = document.querySelector("#country");
 
@@ -70,9 +70,85 @@ const getCountryData = function (country) {
 
 }
 
+//Promisifiyng Geolocation API
+
+// More manual and explicit way
+// const getPosition = () => {
+//     return new Promise((resolve, reject) => {
+//         navigator.geolocation.getCurrentPosition(
+//             position => resolve(position),
+//             err => reject(err)
+//         )
+//     })
+// }
+
+const getPosition = () => new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject))
+
+//Reverse geocoding of location based on provided values
+const whereAmI = function (lat, lng) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+            getCountryData(data.address.country);
+        })
+        .catch(err => console.error(err.message))
+}
+
+
 document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !countryInput.value == "") {
         getCountryData(countryInput.value)
         countryInput.value = ""
     }
 })
+
+//Where am I? button listener
+btnWaI.addEventListener("click", () => {
+    getPosition()
+        .then(response => {
+            const { latitude, longitude } = response.coords;
+            whereAmI(latitude, longitude);
+        })
+        .catch(err => alert("Somethig went wrong\nCan't access location"))
+})
+
+/////////////////////////////////////////
+
+//Manually building simple promise
+
+// const myPromise = (value) => {
+//     return new Promise((resolve, reject) => {
+//         if (value == "Nasir") resolve("Hi Nasir welcome")
+//         else reject(new Error("I don't know you"))
+//     })
+// }
+// const person = prompt("Who are you?");
+
+// //Consuming promise
+// myPromise(person)
+//     .then(response => console.log(response))
+//     .catch(err => console.error(err))
+
+
+// //Promisfying setTimeout()
+// const waitforasec = (sec) => new Promise((resolve) => setTimeout(resolve, sec * 1000))
+
+// //Consuming and chaining
+// waitforasec(1).then(() => {
+//     console.log('Waited for 1 seconds');
+//     return waitforasec(1)
+// }).then(() => {
+//     console.log('Waited for 2 seconds')
+//     return waitforasec(1)
+// }).then(() => {
+//     console.log('Waited for 3 seconds')
+//     return waitforasec(1)
+// }).then(() => {
+//     console.log('Waited for 4 seconds')
+//     return waitforasec(1)
+// }).then(() => {
+//     console.log('Waited for 5 seconds')
+//     return waitforasec(1)
+// })
+
