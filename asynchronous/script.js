@@ -5,6 +5,8 @@ const countriesContainer = document.querySelector('.countries');
 const countryInput = document.querySelector("#country");
 
 ///////////////////////////////////////
+
+//Render country container html
 const renderCountry = (data, neighbour = "") => {
     let html = `
     <article class="country ${neighbour}">
@@ -23,19 +25,19 @@ const renderCountry = (data, neighbour = "") => {
     countriesContainer.insertAdjacentHTML("beforeend", html)
 }
 
-//First and Old method of getting data from Web API
-//With XML Request and Eventhandler
+// //First and Old method of getting data from Web API
+// //With XML Request and Eventhandler
 
-// const getCountryData = function (country) {
-//     const request = new XMLHttpRequest();
-//     request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
-//     request.send();
+// // const getCountryData = function (country) {
+// //     const request = new XMLHttpRequest();
+// //     request.open("GET", `https://restcountries.com/v3.1/name/${country}`);
+// //     request.send();
 
-//     request.addEventListener("load", () => {
-//         const [data] = JSON.parse(request.responseText);
-//         renderCountry(data);
-//     });
-// };
+// //     request.addEventListener("load", () => {
+// //         const [data] = JSON.parse(request.responseText);
+// //         renderCountry(data);
+// //     });
+// // };
 
 //With Fetch API and Promises
 const getCountryData = function (country) {
@@ -49,7 +51,6 @@ const getCountryData = function (country) {
         })
         .then((data) => {
             renderCountry(data[0])
-            console.log(data[0]);
 
             const neighbours = data[0].borders;
 
@@ -70,7 +71,7 @@ const getCountryData = function (country) {
 
 }
 
-//Promisifiyng Geolocation API
+//Promisifying Geolocation API
 
 // More manual and explicit way
 // const getPosition = () => {
@@ -85,17 +86,37 @@ const getCountryData = function (country) {
 const getPosition = () => new Promise((resolve, reject) =>
     navigator.geolocation.getCurrentPosition(resolve, reject))
 
+
 //Reverse geocoding of location based on provided values
-const whereAmI = function (lat, lng) {
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
-        .then(response => response.json())
-        .then(data => {
-            getCountryData(data.address.country);
-        })
-        .catch(err => console.error(err.message))
+//With .then chaining
+// const whereAmI = function (lat, lng) {
+//     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+//         .then(response => response.json())
+//         .then(data => {
+//             getCountryData(data.address.country);
+//         })
+//         .catch(err => console.error(err.message))
+// }
+
+//With Async/Await
+const whereAmI = async () => {
+    //Getting current position coordinates
+    const geoResponse = await getPosition();
+    const { latitude, longitude } = geoResponse.coords;
+
+    //Reverse geocoding promise
+    const reverseResponse = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+    );
+    const data = await reverseResponse.json();
+    console.log(data);
+
+
+    //Rendering country data
+    getCountryData(data.address.country);
 }
 
-
+//"Enter" key listener for country name input
 document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !countryInput.value == "") {
         getCountryData(countryInput.value)
@@ -105,12 +126,15 @@ document.addEventListener("keydown", (e) => {
 
 //Where am I? button listener
 btnWaI.addEventListener("click", () => {
-    getPosition()
-        .then(response => {
-            const { latitude, longitude } = response.coords;
-            whereAmI(latitude, longitude);
-        })
-        .catch(err => alert("Somethig went wrong\nCan't access location"))
+    //First version
+    // getPosition()
+    //     .then(response => {
+    //         const { latitude, longitude } = response.coords;
+    //         whereAmI(latitude, longitude);
+    //     })
+    //     .catch(err => alert("Somethig went wrong\nCan't access location"))
+
+    whereAmI();
 })
 
 /////////////////////////////////////////
@@ -151,4 +175,3 @@ btnWaI.addEventListener("click", () => {
 //     console.log('Waited for 5 seconds')
 //     return waitforasec(1)
 // })
-
