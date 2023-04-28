@@ -100,20 +100,25 @@ const getPosition = () => new Promise((resolve, reject) =>
 
 //With Async/Await
 const whereAmI = async () => {
-    //Getting current position coordinates
-    const geoResponse = await getPosition();
-    const { latitude, longitude } = geoResponse.coords;
+    try {
+        //Getting current position coordinates
+        const geoResponse = await getPosition();
+        const { latitude, longitude } = geoResponse.coords;
 
-    //Reverse geocoding promise
-    const reverseResponse = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-    );
-    const data = await reverseResponse.json();
-    console.log(data);
+        //Reverse geocoding promise
+        const reverseResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+        );
+        const data = await reverseResponse.json();
+        console.log(data);
 
 
-    //Rendering country data
-    getCountryData(data.address.country);
+        //Rendering country data
+        getCountryData(data.address.country);
+    }
+    catch (err) {
+        alert("Too many request at the same time")
+    }
 }
 
 //"Enter" key listener for country name input
