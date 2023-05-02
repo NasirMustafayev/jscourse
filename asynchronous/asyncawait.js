@@ -1,8 +1,11 @@
 'use strict'
+
+//TEST PAGE
+
 const countriesContainer = document.querySelector('.countries');
 
 const renderCountry = (data, neighbour = "") => {
-    let html = `
+  let html = `
     <article class="country ${neighbour}">
     <img class="country__img" src="${data.flags.svg}" />
     <div class="country__data">
@@ -16,14 +19,36 @@ const renderCountry = (data, neighbour = "") => {
     </div >
   </article > `;
 
-    countriesContainer.insertAdjacentHTML("beforeend", html)
-    countriesContainer.style.opacity = 1;
+  countriesContainer.insertAdjacentHTML("beforeend", html)
+  countriesContainer.style.opacity = 1;
 
 }
 
 const getCountryData = async (country) => {
-    const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
-    const countydata = await response.json();
-    renderCountry(countydata[0])
+  // const response = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+  // const countydata = await response.json();
+  // renderCountry(countydata[0])
+
+  return "This is how you return a value from Async function";
 }
-getCountryData("USA")
+getCountryData("USA");
+
+(async () => {
+  const res = await getCountryData();
+  console.log(res);
+
+})();
+
+
+//Promise combinators. How they work and how they react different states of promises(fulfilled,rejected)
+//Promise.all(array of promises)
+//Promise.allSettled(array of promises)
+//Promise.any(array of promises)
+
+Promise.race([
+  Promise.resolve("Success 1"),
+  Promise.reject("Error"),
+  Promise.resolve("Success 2")
+])
+  .then(res => console.log(res))
+  .catch(err => console.log(err))
