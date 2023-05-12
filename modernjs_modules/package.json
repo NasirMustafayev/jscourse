@@ -1,0 +1,19 @@
+{
+  "name": "modernjs_modules",
+  "version": "1.0.0",
+  "description": "Wata do doin?",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_parcel": "parcel index.html",
+    "build_parcel": "parcel build index.html"
+  },
+  "author": "Nasir",
+  "license": "ISC",
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
+}
