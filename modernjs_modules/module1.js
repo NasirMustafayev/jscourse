@@ -7,3 +7,5 @@ const addMember = (name, lastname) => {
 }
 
 export { addMember, users as members };
+
+if (module.hot) module.hot.accept();
