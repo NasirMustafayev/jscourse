@@ -1,5 +1,9 @@
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "livePreview.defaultPreviewPath": "/asynchronous/index.html"
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "livePreview.defaultPreviewPath": "/asynchronous/index.html",
+    "prettier.printWidth": 1,
+    "prettier.proseWrap": "always",
+    "prettier.requireConfig": true,
+    "prettier.useEditorConfig": false
 }
