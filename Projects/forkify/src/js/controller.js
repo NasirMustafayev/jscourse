@@ -30,11 +30,14 @@ const Spinner = (parentEl) => {
 
 const getRecipe = async () => {
   try {
+    const id = window.location.hash.slice(1)
+
+    if (!id) return;
     //Render spinner
     Spinner(recipeContainer);
 
     //Load recipe
-    const response = await fetch("https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886");
+    const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
     const data = await response.json();
 
     console.log(data);
@@ -153,3 +156,6 @@ const getRecipe = async () => {
   }
 }
 getRecipe();
+
+window.addEventListener("hashchange", getRecipe)
+window.addEventListener("load", getRecipe)
